@@ -1,4 +1,5 @@
-﻿using prjPadaria.Models;
+﻿using prjPadaria.Data;
+using prjPadaria.Models;
 
 namespace prjPadaria
 {
@@ -13,12 +14,14 @@ namespace prjPadaria
             // Produtos 
             Produto produto1 = new Produto(1, "Pão",    10.00,  "Padaria", 1);
             Produto produto2 = new Produto(2, "Sonho",  2.00,   "Padaria", 1);
-            Produto produto3 = new Produto(3, "Fubá",   3.00,   "Padaria", 1);
+            Produto produto3 = new Produto(3, "Fubá",   5.00,   "Padaria", 1);
+            Produto produto4 = new Produto(3, "Pedra",  500.00, "Pedreira", 1);
 
             // Itens
-            ItemPedido item = new ItemPedido(1, 1, produto1.Id, 10, produto1.Preco);
-            ItemPedido item2 = new ItemPedido(1, 1, produto2.Id, 10, produto2.Preco);
-            ItemPedido item3 = new ItemPedido(1, 1, produto3.Id, 10, produto3.Preco);
+            ItemPedido item = new ItemPedido(1, 1, produto1.Id, 1, produto1.Preco);
+            ItemPedido item2 = new ItemPedido(2, 1, produto2.Id, 2, produto2.Preco);
+            ItemPedido item3 = new ItemPedido(3, 1, produto3.Id, 3, produto3.Preco);
+            ItemPedido item4 = new ItemPedido(4, 1, produto4.Id, 50, produto4.Preco);
 
 
             DateTime dataHoje = DateTime.Now;
@@ -26,8 +29,11 @@ namespace prjPadaria
             List<ItemPedido> listaDeItens = new List<ItemPedido>() { 
                 item,
                 item2,
-                item3
+                item3,
+                item4,
             }; 
+
+            
 
             Pedido pedido = new Pedido(1, cliente.Id, dataHoje, listaDeItens);
 
@@ -38,13 +44,19 @@ namespace prjPadaria
             
             foreach(var p in pedido.Itens)
             {
-                Console.WriteLine($"ID {p.Id} - Quantidade:{p.Quantidade} - Subtotal {p.Subtotal()}  ");
-                Console.WriteLine(p);
+                
+                Console.WriteLine($"ID {p.ProdutoId} - Quantidade:{p.Quantidade} - Subtotal {p.Subtotal()}  ");
+               
             }
 
+            Console.WriteLine(pedido.Itens.Count);
             Console.WriteLine($"Valor Pedido{ pedido.CalcularTotal():F2}");
 
            
+           ClienteData clienteData = new ClienteData();
+
+            clienteData.Inserir(cliente);
+
         }
     }
 }
