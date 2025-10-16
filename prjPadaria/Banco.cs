@@ -1,21 +1,16 @@
 ﻿using MySqlConnector;
 using System.Data;
 
-public class Banco
+public static class Banco
 {
     // Tornamos a string de conexão privada e de leitura
-    private readonly string _stringDeConexao = "Server=192.168.0.166;Port=3306;Database=db_playground;Uid=admin;Pwd=123456;";
+    private static string _stringDeConexao = "Server=192.168.0.166;Port=3306;Database=db_padaria;Uid=admin;Pwd=123456;";
 
     // Construtores... (seus construtores existentes estão OK)
-    public Banco(string stringDeConexao)
-    {
-        _stringDeConexao = stringDeConexao;
-    }
-
-    public Banco() { }
+   
 
     // Método central para comandos que não retornam resultados (INSERT, UPDATE, DELETE)
-    public int executarComando(MySqlCommand command)
+    public static int executarComando(MySqlCommand command)
     {
         // Usa o 'using' para garantir que a conexão seja aberta, usada e fechada
         using (var conexao = new MySqlConnection(_stringDeConexao))
@@ -37,7 +32,7 @@ public class Banco
 
     // Método central para comandos que retornam resultados (SELECT)
     // Retorna o MySqlDataReader para que o chamador possa processar os dados
-    public MySqlDataReader ExecuteReader(MySqlCommand command)
+    public static MySqlDataReader ExecuteReader(MySqlCommand command)
     {
         var conexao = new MySqlConnection(_stringDeConexao);
         command.Connection = conexao;

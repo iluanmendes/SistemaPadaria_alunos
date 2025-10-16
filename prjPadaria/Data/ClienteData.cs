@@ -12,7 +12,7 @@ namespace prjPadaria.Data
     internal class ClienteData
     {
 
-        private Banco banco = new Banco();
+       
 
         public int Inserir(Cliente cliente)
         {
@@ -25,7 +25,7 @@ namespace prjPadaria.Data
                 cmd.Parameters.AddWithValue("@Telefone", cliente.Telefone);
                 cmd.Parameters.AddWithValue("@Email", cliente.Email);
 
-                return banco.executarComando(cmd);
+                return Banco.executarComando(cmd);
             }
 
 
