@@ -30,6 +30,42 @@ public static class Banco
         }
     }
 
+    public static int executarComandoComRetornoId(MySqlCommand command)
+    {
+        // Usa o 'using' para garantir que a conexão seja aberta, usada e fechada
+        using (var conexao = new MySqlConnection(_stringDeConexao))
+        {
+            command.Connection = conexao;
+            try
+            {
+                conexao.Open();
+                // O método ExecuteNonQuery retorna o número de linhas afetadas
+
+                object objRetorno = command.ExecuteScalar();
+                int intRetorno=0;
+
+                if (objRetorno != null && objRetorno != DBNull.Value) {
+
+                    intRetorno = int.Parse(objRetorno.ToString());
+                }
+
+               
+
+                return intRetorno;
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine($"Erro de Banco de Dados: {ex.Message}");
+                return -1; // Retorna um valor indicando falha
+            }
+        }
+    }
+
+
+
+
+
+
     // Método central para comandos que retornam resultados (SELECT)
     // Retorna o MySqlDataReader para que o chamador possa processar os dados
     public static MySqlDataReader ExecuteReader(MySqlCommand command)

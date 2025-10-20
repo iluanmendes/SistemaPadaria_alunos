@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySqlConnector;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,6 +37,35 @@ namespace prjPadaria.Models
         
         }
 
+
+        public static List<Produto> Listar()
+        {
+            string sql = "SELECT * FROM `Produto` ORDER BY `id`;";
+
+            using (var command = new MySqlCommand(sql))
+            {
+                MySqlDataReader reader = Banco.ExecuteReader(command);
+
+                List<Produto> produtos = new List<Produto>();
+
+                while (reader.Read())
+                {
+
+                    int id = reader.GetInt32("id");
+                    string nome = reader.GetString("nome");
+                    double preco = reader.GetDouble("preco");
+                    string categoria = reader.GetString("categoria");
+                    int marcaId = reader.GetInt32("marcaId");
+
+
+                    var produto = new Produto(id, nome, preco, categoria, marcaId);
+
+                    produtos.Add(produto);
+                }
+
+                return produtos;
+            }
+        }
 
 
 

@@ -85,12 +85,107 @@ namespace prjPadaria
             //    Console.WriteLine("Não foi possível localizar a marca por este ID");
             //}
 
-            Cliente cliente = new Cliente("Luan", "1197477777","luan@gmail.com");
+            Usuario user = new Usuario("Luan", "email@email.com.br", "12345", 1);
 
-            Console.WriteLine(Cliente.Adicionar(cliente));
 
-            
+            try
+            {
 
+                Console.WriteLine("Digite seu e-mail");
+                string email = Console.ReadLine();
+
+
+                Console.WriteLine("Digite seu e-mail");
+                string senha = Console.ReadLine();
+
+
+                Usuario login = Usuario.Autenticar(email, senha);
+
+                if (login != null)
+                {
+
+                    Console.WriteLine($"Seja bem vindo, {login.Nome}");
+                    Console.WriteLine($"Seu perfil de acesso é: {login.PerfilAcesso}");
+                }
+
+
+                List<Produto> produtos = Produto.Listar();
+                List<ItemPedido> produtosCompra = new List<ItemPedido>();
+                
+                Console.WriteLine($"{"Id", -4} | {"Produto", -30}  |  {"Preço", -7} | ");
+                Console.WriteLine("");
+
+                foreach (var item in produtos)
+                {
+                    Console.WriteLine($"{item.Id, -4} | {item.Nome, -30}  | R$ {item.Preco,-5:F2} | ");
+                }
+
+                int opc = 0;
+
+                Console.WriteLine("");
+
+                do
+                {
+                    Console.WriteLine("Digite o ID de um produto da lista. A qualquer momento pressione 0 para encerrar a lista de produtos");
+
+                     bool bOpc = int.TryParse(Console.ReadLine(), out opc);                     
+                     bool validaOpc = produtos.Any(prod => prod.Id == opc);
+
+                    if (bOpc && validaOpc)
+                    {
+                        var produtoEncontrado = produtos.FirstOrDefault(prod => prod.Id == opc);
+                        int qtdDesejada = 1;
+
+                        Console.WriteLine($"Digite a quantidade itens que deseja para {produtoEncontrado?.Nome}");
+
+                        if(!int.TryParse(Console.ReadLine(), out qtdDesejada))
+                        {
+                            qtdDesejada = 1;
+                        }
+
+                        ItemPedido novoProduto = new ItemPedido(0, produtoEncontrado.Id, qtdDesejada, produtoEncontrado.Preco);
+
+                        produtosCompra.Add(novoProduto);
+
+
+                    } else if(opc == 0)
+                    {
+                        Console.WriteLine("Saindo!!");
+                    }
+                    else {
+                        Console.WriteLine("Opção Inválida - Digite somente  números e IDs da lista de produtos");
+                    }
+
+
+                    
+
+
+                }while (opc!=0);
+
+
+                Pedido pedido = new Pedido(1, login.Id, DateTime.Now, produtosCompra);
+
+                Pedido.FecharPedido(pedido);
+
+                // ---
+
+                Console.WriteLine("TESTE---------");
+
+                foreach (var item in produtosCompra)
+                {
+                    Console.WriteLine($"{item.ProdutoId} -  Qtd {item.Quantidade} - Preco {item.PrecoUnitario} { item.Subtotal()}");
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
+
+            }
+
+
+           
 
 
 

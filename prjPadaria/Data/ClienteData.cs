@@ -12,12 +12,12 @@ namespace prjPadaria.Data
     internal class ClienteData
     {
 
-       
+
 
         public int Inserir(Cliente cliente)
         {
-         
-             string sql = "INSERT INTO `tb_clientes` (Nome, Telefone, Email) VALUES (@Nome, @Telefone, @Email); SELECT LAST_INSERT_ID();";
+
+            string sql = "INSERT INTO `tb_clientes` (Nome, Telefone, Email) VALUES (@Nome, @Telefone, @Email); SELECT LAST_INSERT_ID();";
 
             using (var cmd = new MySqlCommand(sql))
             {
@@ -28,10 +28,13 @@ namespace prjPadaria.Data
                 return Banco.executarComando(cmd);
             }
 
-
-            
-
         }
+
+
+       
+
+
+       
 
     }
 }

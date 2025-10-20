@@ -41,7 +41,8 @@ namespace prjPadaria.Models
         /// </summary>
         /// <param name="Cliente">Recebe um objeto cliente por parâmtro </param>
         /// <returns></returns>
-        public static int Adicionar(Cliente cliente) {
+        public static int Adicionar(Cliente cliente)
+        {
 
             string sql = "INSERT INTO `Cliente` (`Nome`, `Telefone`, `Email`) VALUES (@Nome, @Telefone, @Email)";
 
@@ -54,6 +55,53 @@ namespace prjPadaria.Models
 
                 return Banco.executarComando(cmd);
 
+            }
+
+        }
+
+        public static int Deletar(Cliente cliente)
+        {
+
+            string sql = "DELETE FROM `Cliente` WHERE `ID` = @ID;";
+
+            using (var cmd = new MySqlCommand(sql))
+            {
+
+                cmd.Parameters.AddWithValue("@Nome", cliente.Nome);
+                cmd.Parameters.AddWithValue("@Telefone", cliente.Telefone);
+                cmd.Parameters.AddWithValue("@Email", cliente.Email);
+
+                return Banco.executarComando(cmd);
+
+            }
+
+        }
+
+        public static Cliente ListarPorEmail(string emailProcura)
+        {
+            string sql = "SELECT * FROM `Cliente` WHERE `email` = @Email";
+
+            using (var command = new MySqlCommand(sql))
+            {
+                command.Parameters.AddWithValue("@Email", emailProcura);
+                MySqlDataReader reader = Banco.ExecuteReader(command);
+
+                Cliente cliente = null;
+
+                while (reader.Read())
+                {
+
+                    int id = reader.GetInt32("id");
+                    string nome = reader.GetString("Nome");
+                    string email = reader.GetString("Email");
+                    string telefone = reader.GetString("Telefone");
+
+                    cliente = new Cliente(id, nome, telefone, email);
+
+
+                }
+
+                return cliente;
             }
 
         }
